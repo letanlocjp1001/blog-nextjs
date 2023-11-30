@@ -1,37 +1,33 @@
+import Head from 'next/head'
 import Hero from '@/components/home-page/hero'
 import FeaturedPosts from '@/components/home-page/featured-posts'
+import { getFeaturedPosts } from '@/lib/posts-util'
 
-const DUMMY_POSTS = [
-  {
-    slug: 'cat',
-    title: 'Getting Started with Nextjs',
-    image: 'cat-2.png',
-    excerpt: 'Nextjs is a the React framework',
-    date: 2022 - 12 - 10,
-  },
-  {
-    slug: 'cat',
-    title: 'Getting Started with Nextjs',
-    image: 'cat-2.png',
-    excerpt: 'Nextjs is a the React framework',
-    date: 2022 - 12 - 10,
-  },
-  {
-    slug: 'cat',
-    title: 'Getting Started with Nextjs',
-    image: 'cat-2.png',
-    excerpt: 'Nextjs is a the React framework',
-    date: 2022 - 12 - 10,
-  },
-]
-
-function HomePage() {
+function HomePage(props) {
   return (
     <>
+      <Head>
+        <title>KANEKI BLOG</title>
+        <meta
+          name='description'
+          content='I post about programming and web development'
+        />
+      </Head>
       <Hero />
-      <FeaturedPosts posts={DUMMY_POSTS} />
+      <FeaturedPosts posts={props.posts} />
     </>
   )
+}
+
+export function getStaticProps() {
+  const featuredPosts = getFeaturedPosts()
+
+  return {
+    props: {
+      posts: featuredPosts,
+    },
+    revalidate: 100,
+  }
 }
 
 export default HomePage
